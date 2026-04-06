@@ -4,6 +4,7 @@ import com.example.readingroutine.domain.Book;
 import com.example.readingroutine.domain.ReadingRecord;
 import com.example.readingroutine.domain.ReadingStatus;
 import com.example.readingroutine.domain.User;
+import com.example.readingroutine.dto.ReadingRecordResponse;
 import com.example.readingroutine.repository.BookRepository;
 import com.example.readingroutine.repository.ReadingRecordRepository;
 import com.example.readingroutine.repository.UserRepository;
@@ -40,7 +41,16 @@ public class ReadingRecordService {
     }
 
     // 사용자 기록 조회
-    public List<ReadingRecord> getRecords(Long userId) {
-        return readingRecordRepository.findByUserId(userId);
+    public List<ReadingRecordResponse> getRecords(Long userId) {
+        return readingRecordRepository.findByUserId(userId).stream()
+                .map(record -> new ReadingRecordResponse(
+                        record.getId(),
+                        record.getBook().getTitle()
+                ))
+                .toList();
     }
+//    public List<ReadingRecord> getRecords(Long userId) {
+//        return readingRecordRepository.findByUserId(userId);
+//    }
+
 }
